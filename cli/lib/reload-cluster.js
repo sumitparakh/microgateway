@@ -456,7 +456,7 @@ class ClusterManager extends EventEmitter {
   // definition of readiness
   handleReadyEvent(w) {
     if ( replacementMap[w.id] ) {
-      let wk = replacementMap[w.id];
+      const wk = replacementMap[w.id];
       tClosers[wk] = tTracked[wk]  // move old worker to tClosers, this is to be killed.
       this.opt.logger.info(`Replaced worker : ${wk} by worker : ${w.id}`);
       if ( this.reloadList[wk] ) {
@@ -617,7 +617,7 @@ class ClusterManager extends EventEmitter {
       }
 
       // set the existing workers for reload
-      this.reloadList = { ...cluster.workers }
+      this.reloadList = Object.assign({}, cluster.workers);
       this.opt.logger.info(`Started reloading at : ${new Date().toISOString()}, workers to be reloaded ${ Object.keys(this.reloadList) } `);
       this.processReloading(this.getNextToBeReloaded());
     }
@@ -640,9 +640,9 @@ class ClusterManager extends EventEmitter {
   }
 
   checkWorkerStatus(worker){
-    let maxTimeToCheck = Date.now() + WORKER_FORCEKILL_TIMEOUT;
+    const maxTimeToCheck = Date.now() + WORKER_FORCEKILL_TIMEOUT;
 
-    let checkStatusIntervalRef = setInterval(()=> {
+    const checkStatusIntervalRef = setInterval(()=> {
       
       this.opt.logger.debug(`reloading cluster is in progress, checking status of : ${ worker.id } current workers : ${Object.keys(cluster.workers)},
       reloadList : ${Object.keys(this.reloadList)}`);

@@ -228,8 +228,9 @@ Gateway.prototype.start = (options,cb) => {
         //start the polling mechanism to look for config changes
         var reloadOnConfigChange = (oldConfig, cache, opts) => {
             writeConsoleLog('log', { component: CONSOLE_LOG_TAG_COMP }, 'Checking for change in configuration');
-            if (configurl)
+            if (configurl) {
                 opts.configurl = configurl;
+            }
             //var self = this;
             edgeconfig.get(opts, (err, newConfig) => {
                 if (validator(newConfig) === false && !err) {
@@ -276,7 +277,7 @@ Gateway.prototype.start = (options,cb) => {
             try {
                 require('../../tests/heapdump_test').masterHeapDump();
             } catch(e){
-
+                /** empty */
             }
         }
         
