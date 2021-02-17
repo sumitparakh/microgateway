@@ -71,7 +71,7 @@ describe("locations module", () => {
 	});
 
 	it("will build a source path with a configDir", done => {
-		var configPath = locations.getSourcePath("test", "foo", "foo");
+		var configPath = locations.getSourcePath("test", "foo", "foo").replace(/\\/g, '/');
 		assert.equal(configPath, "foo/test-foo-config.yaml");
 		done();
 	});
@@ -86,7 +86,7 @@ describe("locations module", () => {
 	});
 
 	it("will build a cache path with a configDir", done => {
-		var cachePath = locations.getCachePath("test", "foo", "foo");
+		var cachePath = locations.getCachePath("test", "foo", "foo").replace(/\\/g, '/');
 		assert.equal(cachePath, "foo/test-foo-cache-config.yaml");
 		done();
 	});
