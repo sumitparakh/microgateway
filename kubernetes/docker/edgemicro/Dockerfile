@@ -10,6 +10,10 @@ RUN addgroup --system --gid 101 apigee && \
 
 ENV NODE_ENV production
 
+RUN apt-get update && \
+    apt-get install -y python && \
+    apt-get install -y git 
+
 #install node.js
 RUN chmod +x /tmp/installnode.sh && \
     /bin/bash /tmp/installnode.sh && \

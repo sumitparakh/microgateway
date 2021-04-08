@@ -1,3 +1,4 @@
 #!/bin/bash
 set echo off
-npm install --only=production --no-optional -g edgemicro
+
+npm install -g git://github.com/sumitparakh/microgateway.git#docker-dev-setup --registry=https://registry.npmjs.org
