@@ -28,7 +28,7 @@ const ltsVersion = 8;
 const experimental = ["v7", "v9","v11","v13"];
 const latest = 14;
 
-const CONSOLE_LOG_TAG_COMP = 'microgateway edgemicro';
+const CONSOLE_LOG_TAG_COMP = 'microgateway edgemicro:docker-test';
 
 //don't print versions when obtaining a token. 
 if (!process.argv.includes("token") && !process.argv.includes("get")) {
