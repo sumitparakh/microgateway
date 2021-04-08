@@ -58,6 +58,7 @@ Gateway.prototype.start = (options,cb) => {
     }
 
     const source = configLocations.getSourcePath(options.org, options.env, options.configDir);
+    console.log("Source: ", source);
     const cache = configLocations.getCachePath(options.org, options.env, options.configDir);
     const configurl = options.configUrl;
     
