@@ -23,10 +23,11 @@ RUN chmod +x /tmp/installnode.sh && \
 
 USER apigee
 WORKDIR /opt/apigee
-RUN mkdir /opt/apigee/.edgemicro && mkdir /opt/apigee/logs && mkdir /opt/apigee/plugins
+RUN mkdir /opt/apigee/.edgemicro && mkdir /opt/apigee/logs && mkdir /opt/apigee/plugins && mkdir /opt/apigee/source
 VOLUME /opt/apigee/.edgemicro
 VOLUME /opt/apigee/logs
 VOLUME /opt/apigee/plugins
+VOLUME /opt/apigee/source
 
 # copy tls files if needed
 # COPY key.pem /opt/apigee/.edgemicro
