@@ -10,10 +10,12 @@ RUN addgroup --system --gid 101 apigee && \
 
 ENV NODE_ENV production
 
+# Start: Changes for local development
 RUN apt-get update && \
     apt-get install -y build-essential && \
     apt-get install -y python && \
     apt-get install -y git 
+# End: Changes for local development
 
 #install node.js
 RUN chmod +x /tmp/installnode.sh && \
@@ -21,7 +23,9 @@ RUN chmod +x /tmp/installnode.sh && \
     rm -f /tmp/installnode.sh && \
     userdel --remove node
 
+# Start: Changes for local development
 RUN chown -R apigee:apigee /opt/apigee/microgateway
+# End: Changes for local development
 
 USER apigee
 WORKDIR /opt/apigee
