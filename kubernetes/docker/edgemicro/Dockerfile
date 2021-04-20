@@ -21,6 +21,8 @@ RUN chmod +x /tmp/installnode.sh && \
     rm -f /tmp/installnode.sh && \
     userdel --remove node
 
+RUN chown -R apigee:apigee /opt/apigee/microgateway
+
 USER apigee
 WORKDIR /opt/apigee
 RUN mkdir /opt/apigee/.edgemicro && mkdir /opt/apigee/logs && mkdir /opt/apigee/plugins && mkdir /opt/apigee/source
