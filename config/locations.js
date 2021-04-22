@@ -41,14 +41,16 @@ module.exports = {
     }
   },
   getIPCFilePath: function getIPCFilePath() {
+    const ipcPath = process.env.EDGEMICRO_IPC_PATH ? process.env.EDGEMICRO_IPC_PATH.trim() : '';
     if (!isWin) {
-      return path.join(process.cwd(), defaultIPCFileName + '.sock');
+      return path.join(ipcPath ? ipcPath : process.cwd(), defaultIPCFileName + '.sock');
     } else {
-      return path.join('\\\\?\\pipe', process.cwd(), defaultIPCFileName);
+      return path.join('\\\\?\\pipe', pidPath ? pidPath : process.cwd(), defaultIPCFileName);
     }
   },
   getPIDFilePath: function getPIDFilePath() {
-    return path.join(process.cwd(), defaultIPCFileName + '.pid');
+    const pidPath = process.env.EDGEMICRO_PID_PATH ? process.env.EDGEMICRO_PID_PATH.trim() : '';
+    return path.join(pidPath ? pidPath : process.cwd(), defaultIPCFileName + '.pid');
   },  
   homeDir: homeDir,
   defaultDir: configDir,
