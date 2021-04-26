@@ -8,8 +8,8 @@ const reloadCluster = require('./reload-cluster');
 const JsonSocket = require('../../third_party/json-socket/json-socket');
 const configLocations = require('../../config/locations');
 const isWin = /^win/.test(process.platform);
-const ipcPath = configLocations.getIPCFilePath();
-const pidPath = configLocations.getPIDFilePath();
+let ipcPath = configLocations.getIPCFilePath();
+let pidPath = configLocations.getPIDFilePath();
 const defaultPollInterval = 600;
 const uuid = require('uuid/v1');
 const debug = require('debug')('microgateway');
@@ -120,6 +120,24 @@ Gateway.prototype.start = (options,cb) => {
             }
             edgeconfig.save(config, cache);
         }
+
+        ipcPath = configLocations.getIPCFilePath(config.edgemicro.sockFilePath);
+        pidPath = configLocations.getPIDFilePath(config.edgemicro.pidFilePath);
+
+        try {
+            fs.accessSync(ipcPath, fs.F_OK);
+            writeConsoleLog('error',{component: CONSOLE_LOG_TAG_COMP},'Edgemicro seems to be already running.');
+            writeConsoleLog('error',{component: CONSOLE_LOG_TAG_COMP},'If the server is not running, it might because of incorrect shutdown of the prevous start.');
+            writeConsoleLog('error',{component: CONSOLE_LOG_TAG_COMP},'Try removing ' + ipcPath + ' and start again');
+            process.exit(1);
+        } catch (e) {
+            // Socket does not exist
+            // so ignore and proceed
+            if (e.code !== "ENOENT") {
+                debug(e.message);            
+            }
+        }
+    
         config = edgeconfig.replaceEnvTags(config, { disableLogs: true  });
         config.uid = uuid();
         initializeMicroGatewayLogging(config, options);

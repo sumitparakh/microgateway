@@ -40,15 +40,15 @@ module.exports = {
       return path.join(this.homeDir, org + "-" + env + "-" + cacheFile);
     }
   },
-  getIPCFilePath: function getIPCFilePath() {
+  getIPCFilePath: function getIPCFilePath(customDir) {
     if (!isWin) {
-      return path.join(process.cwd(), defaultIPCFileName + '.sock');
+      return path.join(customDir || process.cwd(), defaultIPCFileName + '.sock');
     } else {
-      return path.join('\\\\?\\pipe', process.cwd(), defaultIPCFileName);
+      return path.join('\\\\?\\pipe', customDir || process.cwd(), defaultIPCFileName);
     }
   },
-  getPIDFilePath: function getPIDFilePath() {
-    return path.join(process.cwd(), defaultIPCFileName + '.pid');
+  getPIDFilePath: function getPIDFilePath(customDir) {
+    return path.join(customDir || process.cwd(), defaultIPCFileName + '.pid');
   },  
   homeDir: homeDir,
   defaultDir: configDir,
