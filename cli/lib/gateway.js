@@ -384,6 +384,8 @@ Gateway.prototype.stop = ( /*options */ ) => {
         if (error) {
             if (error.code === 'ENOENT') {
 		        writeConsoleLog('error',{component: CONSOLE_LOG_TAG_COMP},'edgemicro is not running.');
+            } else {
+		        writeConsoleLog('error',{component: CONSOLE_LOG_TAG_COMP},error.code + ':: edgemicro is not running.');
             }
         }
     });
