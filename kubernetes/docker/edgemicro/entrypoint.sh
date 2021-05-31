@@ -8,6 +8,8 @@ LOG_FILE=${APIGEE_ROOT}/logs/edgemicro.log
 echo "Log Location: [ $LOG_FILE ]"
 echo "SIGTERM delay : [ $EDGEMICRO_STOP_DELAY ]"
 
+IFS=
+
 start_edge_micro() {
   
   if  [[ -n "$SERVICE_NAME" ]]
@@ -31,7 +33,6 @@ start_edge_micro() {
 
   if [[ -n "$EDGEMICRO_CONFIG"  ]]
     then
-      IFS=
       echo $EDGEMICRO_CONFIG | base64 -d > ${APIGEE_ROOT}/.edgemicro/$EDGEMICRO_ORG-$EDGEMICRO_ENV-config.yaml
       chown apigee:apigee ${APIGEE_ROOT}/.edgemicro/*
   fi
@@ -124,12 +125,24 @@ start_edge_micro() {
   echo $CMDSTRING
 }
 
-start_edge_micro  2>&1 | tee -i $LOG_FILE
+CON3=$(echo $EDGEMICRO_CONFIG | base64 -d | grep -Eo 'to_console: (true|True|TRUE)')
+
+if [[ -n "$CON3" ]]
+  then
+    start_edge_micro  2>&1
+  else
+    start_edge_micro  2>&1 | tee -i $LOG_FILE
+fi
 
 # SIGUSR1-handler
 my_handler() {
   echo "my_handler" >> /tmp/entrypoint.log
-  /bin/bash -c "cd ${APIGEE_ROOT} && edgemicro stop" 2>&1  | tee -i $LOG_FILE
+  if [[ -n "$CON3" ]]
+    then
+      /bin/bash -c "cd ${APIGEE_ROOT} && edgemicro stop" 2>&1
+    else
+      /bin/bash -c "cd ${APIGEE_ROOT} && edgemicro stop" 2>&1  | tee -i $LOG_FILE
+  fi
 }
 
 # SIGTERM-handler
@@ -144,7 +157,14 @@ term_handler() {
     echo "term_handler_sleep $EDGEMICRO_STOP_DELAY" >> /tmp/entrypoint.log
     sleep $EDGEMICRO_STOP_DELAY
   fi
-  /bin/bash -c "cd ${APIGEE_ROOT} && edgemicro stop"  2>&1 | tee -i $LOG_FILE
+
+  if [[ -n "$CON3" ]]
+    then
+      /bin/bash -c "cd ${APIGEE_ROOT} && edgemicro stop" 2>&1
+    else
+      /bin/bash -c "cd ${APIGEE_ROOT} && edgemicro stop"  2>&1 | tee -i $LOG_FILE
+  fi
+
   exit 143; # 128 + 15 -- SIGTERM
 }
 
