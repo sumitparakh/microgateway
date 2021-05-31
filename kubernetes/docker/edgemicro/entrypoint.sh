@@ -124,7 +124,14 @@ start_edge_micro() {
   echo $CMDSTRING
 }
 
-start_edge_micro  2>&1 | tee -i $LOG_FILE
+CON3=$(echo $EDGEMICRO_CONFIG | base64 -d | grep -Eo 'to_console: (true|True|TRUE)')
+
+if [[ -n "$CON3" ]]
+  then
+    start_edge_micro  2>&1
+  else
+    start_edge_micro  2>&1 | tee -i $LOG_FILE
+fi
 
 # SIGUSR1-handler
 my_handler() {
