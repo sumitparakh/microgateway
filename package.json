@@ -32,7 +32,7 @@
     "portastic": "^1.0.1",
     "request": "^2.87.0",
     "rimraf": "^2.4.3",
-    "tmp": "0.0.28",
+    "tmp": "0.2.1",
     "uuid": "^3.2.1",
     "volos-cache-memory": "^0.10.1",
     "volos-spikearrest-common": "^0.10.3",
