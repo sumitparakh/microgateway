@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM redis
+FROM redis:8.4.0-bookworm
 
 ADD run.sh /run.sh
 
